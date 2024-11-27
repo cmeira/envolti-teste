@@ -30,7 +30,7 @@ public class PedidoService {
     private RabbitTemplate rabbitTemplate;
 
     @Transactional
-public PedidoDTO criarPedido(PedidoDTO pedidoDTO) {
+    public PedidoDTO criarPedido(PedidoDTO pedidoDTO) {
    
     Pedido pedido = new Pedido();
     pedido.setStatus(pedidoDTO.getStatus());
