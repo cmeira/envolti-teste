@@ -15,11 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ms.order.dtos.PedidoDTO;
 import com.ms.order.dtos.PedidoRecebidoResponse;
-import com.ms.order.model.Pedido;
 import com.ms.order.producers.PedidoProducer;
 import com.ms.order.service.PedidoService;
 

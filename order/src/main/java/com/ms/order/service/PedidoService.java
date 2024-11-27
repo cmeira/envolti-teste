@@ -31,15 +31,13 @@ public class PedidoService {
 
     @Transactional
 public PedidoDTO criarPedido(PedidoDTO pedidoDTO) {
-    // Criando a entidade Pedido a partir do DTO
+   
     Pedido pedido = new Pedido();
     pedido.setStatus(pedidoDTO.getStatus());
     pedido.setValorTotal(pedidoDTO.getValorTotal());
-
-    // Salvando o pedido uma vez, gerando seu ID
+    
     pedido = pedidoRepository.save(pedido);
-
-    // Inicializando a lista de produtos, caso esteja nula
+  
     List<Produto> produtos = new ArrayList<>();
 
     // Processando os produtos
@@ -47,47 +45,25 @@ public PedidoDTO criarPedido(PedidoDTO pedidoDTO) {
         Produto produto = new Produto();
         produto.setPreco(produtoDTO.getPreco());
         produto.setQuantidade(produtoDTO.getQuantidade());
-
-        // Associando o pedido já persistido ao produto
-        produto.setPedido(pedido);  // Associando o pedido (já com ID) ao produto
-
-        // Salvando o produto
-        produtoRepository.save(produto);  // Agora salva o produto corretamente associado ao pedido
-
-        // Adicionando o produto à lista de produtos
+        produto.setPedido(pedido);       
+        produtoRepository.save(produto);       
         produtos.add(produto);
     }
 
-    // Associando a lista de produtos ao pedido
     pedido.setProdutos(produtos);
 
-    // Atualizando o valor total do pedido
     pedido.setValorTotal(calcularValorTotal(pedidoDTO.getProdutos()));
 
-    // Atualizando o status do pedido para "PROCESSADO"
     pedido.setStatus("PROCESSADO");
 
-    // Atualizando o pedido com os produtos e o novo status (não há necessidade de chamá-lo duas vezes)
-    pedidoRepository.save(pedido);  // Esse `save` atualiza o pedido, não cria um novo
-
-    // Retornando o DTO do pedido
+    pedidoRepository.save(pedido); 
+    
     return mapPedidoEntityToDTO(pedido);
 
     }
 
     public void enviarPedidoParaFilaRecebidos(PedidoDTO pedidoDTO) {
         rabbitTemplate.convertAndSend("pedidos", pedidoDTO);
-    }
-
-
-    private Produto persistirProduto(ProdutoDTO produtoDTO) {
-        // Criar o Produto a partir do DTO
-        Produto produto = new Produto();
-        produto.setQuantidade(produtoDTO.getQuantidade());
-        produto.setPreco(produtoDTO.getPreco());
-        
-        // Salvar o produto no banco de dados
-        return produtoRepository.save(produto);  // Salva o produto separadamente no banco
     }
     
 
