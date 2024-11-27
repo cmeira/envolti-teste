@@ -1,0 +1,6 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "spring-boot.redeploy": true,
+    "spring-boot.port": 8080
+}
